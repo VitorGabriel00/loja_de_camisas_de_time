@@ -1,102 +1,38 @@
-import React from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import React, { useState, useEffect } from 'react';
+import { View, FlatList, Image, Text, TouchableOpacity } from 'react-native';
 
-const larguraTela = Dimensions.get("window").width;
+const CatalogoScreen = ({ navigation }) => {
+  const [camisetas, setCamisetas] = useState([
+    { id: 1, nome: 'Camiseta do Santos', imagem: '../assets/camisaSan.png' },
+    { id: 2, nome: 'Camiseta do Grêmio', imagem: '../assets/camisaGre.png' },
+    { id: 3, nome: 'Camiseta do Cruzeiro', imagem: '../assets/camisaCru.png' },
+    { id: 4, nome: 'Camiseta do Palmeiras', imagem: '../assets/camisaPal.png' },
+    { id: 5, nome: 'Camiseta do Amazonas', imagem: '../assets/camisaAmaz.png' },
+    { id: 6, nome: 'Camiseta do Atlético Mineiro', imagem: '../assets/camisaGalo.png' },
+    { id: 7, nome: 'Camiseta do Corinthians', imagem: '../assets/camisaCor.png' },
+    { id: 8, nome: 'Camiseta do Vasco', imagem: '../assets/camisaVas.png' },
+    { id: 9, nome: 'Camiseta do Fluminense', imagem: '../assets/camisaFlu.png' },
+    { id: 10, nome: 'Camiseta do  Internacional', imagem: '../assets/camisaInter.png' },
+  ]);
 
-export default function TelaListaProdutos({ navigation }) {
-  const produtos = [
-    {
-      id: 1,
-      nome: "Smartphone S21",
-      preco: 2499.99,
-      categoria: "Eletrônicos",
-      imagem:
-        "https://upload.wikimedia.org/wikipedia/commons/3/3a/Samsung_Galaxy_S21.png",
-      descricao: "Smartphone top de linha com câmera incrível.",
-      estoque: 15,
-      avaliacoes: 4.8,
-    },
-    {
-      id: 2,
-      nome: "Fone Bluetooth 3 Premium",
-      preco: 299.99,
-      categoria: "Acessórios",
-      imagem:
-        "https://upload.wikimedia.org/wikipedia/commons/8/8e/Headphones_icon.png",
-      descricao: "Som cristalino e bateria que dura o dia todo.",
-      estoque: 8,
-      avaliacoes: 4.5,
-    },
-    {
-      id: 3,
-      nome: "Capa Protetora Ultra",
-      preco: 49.99,
-      categoria: "Acessórios",
-      imagem:
-        "https://upload.wikimedia.org/wikipedia/commons/3/3f/Phone_case_icon.png",
-      descricao: "Proteção militar para seu smartphone.",
-      estoque: 30,
-      avaliacoes: 4.2,
-    },
-    // ...adicione mais produtos para chegar em 10
-  ];
-
-  const abrirDetalhes = (produto) => {
-    navigation.navigate("TelaDetalhesProduto", { produtoSelecionado: produto });
+  const handleCamisetaPress = (camiseta) => {
+    navigation.navigate('Detalhes', { camiseta });
   };
 
   return (
-    <View style={estilos.container}>
-      <Text style={estilos.titulo}>📦 Nossos Produtos</Text>
+    <View>
       <FlatList
-        data={produtos}
-        keyExtractor={(item) => item.id.toString()}
+        data={camisetas}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={estilos.itemProduto}
-            onPress={() => abrirDetalhes(item)}
-          >
-            <Image source={{ uri: item.imagem }} style={estilos.imagemProduto} />
-            <View style={estilos.infoProduto}>
-              <Text style={estilos.nomeProduto}>{item.nome}</Text>
-              <Text style={estilos.categoriaProduto}>{item.categoria}</Text>
-              <Text style={estilos.precoProduto}>R$ {item.preco.toFixed(2)}</Text>
-              <Text style={estilos.avaliacaoProduto}>⭐ {item.avaliacoes}</Text>
-            </View>
-            <Text style={estilos.seta}>➡️</Text>
+          <TouchableOpacity onPress={() => handleCamisetaPress(item)}>
+            <Image source={{ uri: item.imagem }} style={{ width: 100, height: 100 }} />
+            <Text>{item.nome}</Text>
           </TouchableOpacity>
         )}
-        showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => item.id.toString()}
       />
     </View>
   );
-}
+};
 
-const estilos = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#f5f5f5" },
-  titulo: { fontSize: 22, fontWeight: "bold", marginBottom: 20 },
-  itemProduto: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 12,
-    marginBottom: 12,
-    borderRadius: 8,
-    backgroundColor: "#fff",
-    elevation: 2,
-  },
-  imagemProduto: { width: 60, height: 60, borderRadius: 8, marginRight: 12 },
-  infoProduto: { flex: 1 },
-  nomeProduto: { fontSize: 16, fontWeight: "bold" },
-  categoriaProduto: { color: "#777" },
-  precoProduto: { fontSize: 14, fontWeight: "bold", color: "#4CAF50" },
-  avaliacaoProduto: { color: "#FFA000" },
-  seta: { fontSize: 18, marginLeft: 10 },
-});
+export default CatalogoScreen;
